@@ -5,12 +5,12 @@ import time
 
 key = "c137e42a99ef99f0"
 base = open('americanToad.csv',"rt")
-#out = open("americanToadCorre.csv","w")
+out = open("americanToadCorre.csv","w")
 #base = open('springPeeper.csv',"rt")
 #out = open("springPeeperCorre.csv","w")
 #base = open('greenFrog.csv',"rt")
 #out = open("greenFrogCorre.csv","w")
-#reader = csv.reader(base)
+reader = csv.reader(base)
 i = 0
 a = 0
 erros = []
