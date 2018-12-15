@@ -4,10 +4,10 @@ import csv
 import time
 
 key = "c137e42a99ef99f0"
-base = open('americanToad.csv',"rt")
-out = open("americanToadCorre.csv","a")
-#base = open('springPeeper.csv',"rt")
-#out = open("springPeeperCorre.csv","w")
+#base = open('americanToad.csv',"rt")
+#out = open("americanToadCorre.csv","a")
+base = open('springPeeper.csv',"rt")
+out = open("springPeeperCorre.csv","w")
 #base = open('greenFrog.csv',"rt")
 #out = open("greenFrogCorre.csv","w")
 reader = csv.reader(base)
@@ -18,14 +18,14 @@ fieldnames = ['id','date','lat', 'lng', 'tornado', 'monthtodatesnowfalli', 'thun
 
 writer = csv.DictWriter(out, fieldnames=fieldnames, delimiter = ',')
 writerError = csv.writer(out)
-#writer.writeheader()
+writer.writeheader()
 print("Iniciando coleta de dados...")
 for row in reader:
     while (a < 3):
         try:
             f = urllib.request.urlopen("http://api.wunderground.com/api/"+key+"/history_"+row[1]+"/q/"+row[2]+","+row[3]+".json")
             parsed_json = json.loads(f.read())
-            if (parsed_json['history']['dailysummary']):
+            if ("history" in parsed_json and 'dailysummary' in parsed_json['history'] and len(parsed_json['history']['dailysummary']) > 0 ):
                 parsed_json['history']['dailysummary'][0]['id'] = row[0]
                 parsed_json['history']['dailysummary'][0]['date'] = row[1]
                 parsed_json['history']['dailysummary'][0]['lat'] = row[2]
@@ -49,13 +49,19 @@ for row in reader:
         print(i,"resposta(s)")
     a = 0
     if (i % 9 == 0 and i != 0):
-        print("Limite de 10/min atingido. Aguardando 1 minuto...")
-        time.sleep(60)
+        print("Limite de 10/min atingido. Aguardando tempo necessário até próxima consulta...")
+        for n in range(6, 0, -1):
+            print(str(n)+"0 segundos restantes...")
+            time.sleep(10)
         print("Continuando coleta de dados...")
     elif (i % 499 == 0 and i != 0):
-        print("Limite de 500/dia atingido. Aguardando 23 horas...")
-        time.sleep(72000)
+        print("Limite de 500/dia atingido. Aguardando tempo necessário até próxima consulta...")
+        for n in range(24, 0, -1):
+            print(str(n),"hora(s) restante(s)...")
+            time.sleep(3600)
         print("Continuando coleta de dados...")
-
+print("Consulta finalizada!")
+print("IDs com erro na consulta:")
+print(erros)
 out.close()
 base.close()
