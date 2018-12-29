@@ -6,10 +6,10 @@ import time
 key = "c137e42a99ef99f0"
 #base = open('americanToad.csv',"rt")
 #out = open("americanToadCorre.csv","a")
-base = open('springPeeper.csv',"rt")
-out = open("springPeeperCorre.csv","w")
-#base = open('greenFrog.csv',"rt")
-#out = open("greenFrogCorre.csv","w")
+#base = open('springPeeper.csv',"rt")
+#out = open("springPeeperCorre.csv","a")
+base = open('greenFrog.csv',"rt")
+out = open("greenFrogCorre.csv","w")
 reader = csv.reader(base)
 i = 0
 a = 0
@@ -48,13 +48,13 @@ for row in reader:
         i = i + 1
         print(i,"resposta(s)")
     a = 0
-    if (i % 9 == 0 and i != 0):
+    if (i % 10 == 0 and i != 0 and i != 500):
         print("Limite de 10/min atingido. Aguardando tempo necessário até próxima consulta...")
         for n in range(6, 0, -1):
             print(str(n)+"0 segundos restantes...")
             time.sleep(10)
         print("Continuando coleta de dados...")
-    elif (i % 499 == 0 and i != 0):
+    elif (i % 500 == 0 and i != 0):
         print("Limite de 500/dia atingido. Aguardando tempo necessário até próxima consulta...")
         for n in range(24, 0, -1):
             print(str(n),"hora(s) restante(s)...")
